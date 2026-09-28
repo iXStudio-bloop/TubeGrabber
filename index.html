@@ -18,31 +18,10 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
-                    colors: {
-                        yt: {
-                            red: '#FF0000',
-                            dark: '#0f0f0f',
-                            card: '#212121',
-                        }
-                    }
                 }
             }
         }
     </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .dark .glass-panel {
-            background: rgba(33, 33, 33, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-    </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-slate-100 to-rose-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col selection:bg-red-500 selection:text-white">
 
@@ -106,7 +85,6 @@
                 </button>
             </form>
             
-            <!-- Quick Example hints -->
             <div class="mt-4 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2 px-1">
                 <span class="flex items-center space-x-1">
                     <i class="fa-solid fa-circle-info text-red-500"></i>
@@ -118,24 +96,24 @@
             </div>
         </div>
 
-        <!-- Result Section (Hidden by default) -->
-        <div id="resultSection" class="w-full max-w-3xl mt-10 hidden space-y-8 animate-fadeIn">
+        <!-- Result Section -->
+        <div id="resultSection" class="w-full max-w-3xl mt-10 hidden space-y-8">
             
             <!-- Video Info Card -->
             <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-xl border border-slate-200/80 dark:border-zinc-800 flex flex-col md:flex-row gap-6 items-center">
                 <div class="w-full md:w-56 aspect-video rounded-2xl overflow-hidden bg-slate-100 dark:bg-zinc-800 flex-shrink-0 relative shadow-md">
                     <img id="previewThumb" src="" alt="Thumbnail preview" class="w-full h-full object-cover">
                     <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">
-                        HD PREVIEW
+                        PREVIEW
                     </span>
                 </div>
                 <div class="flex-grow text-center md:text-left space-y-2 w-full">
                     <div class="inline-block px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
                         <i class="fa-solid fa-check-circle"></i> Превью успешно найдено
                     </div>
-                    <h3 id="videoVideoIdText" class="text-sm font-mono text-slate-400">ID: dQw4w9WgXcQ</h3>
+                    <h3 id="videoVideoIdText" class="text-sm font-mono text-slate-400">ID: -</h3>
                     <p class="text-xs text-slate-500 dark:text-slate-400">
-                        Выберите нужное разрешение ниже для скачивания фотографии в оригинальном качестве на ваше устройство.
+                        Выберите нужное разрешение ниже для скачивания фотографии на ваше устройство.
                     </p>
                 </div>
             </div>
@@ -147,67 +125,61 @@
                         <i class="fa-solid fa-download text-red-500"></i>
                         <span>Доступные разрешения для скачивания</span>
                     </h4>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                        Все изображения скачиваются напрямую с серверов YouTube в наилучшем качестве.
-                    </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- Max Resolution -->
-                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition group">
+                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition">
                         <div class="space-y-2 mb-4">
                             <div class="flex items-center justify-between">
                                 <span class="px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-lg shadow-sm">Максимальное</span>
                                 <span class="text-xs font-mono text-slate-400">1280 × 720</span>
                             </div>
-                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Макс. разрешение (MaxRes)</h5>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Наивысшее доступное качество превью (HD / 4K источников).</p>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Макс. разрешение</h5>
                         </div>
                         <button onclick="downloadImage('maxresdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
                             <i class="fa-solid fa-cloud-arrow-down"></i>
-                            <span>Скачать HD (1280px)</span>
+                            <span>Скачать HD</span>
                         </button>
                     </div>
 
                     <!-- High Resolution -->
-                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition group">
+                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition">
                         <div class="space-y-2 mb-4">
                             <div class="flex items-center justify-between">
                                 <span class="px-2.5 py-1 bg-amber-500 text-white text-xs font-bold rounded-lg shadow-sm">Высокое</span>
-                                <span class="text-xs font-mono text-slate-400">640 × 480</span>
+                                <span class="text-xs font-mono text-slate-400">480 × 360</span>
                             </div>
-                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Высокое (High Quality)</h5>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Отличный баланс качества и скорости загрузки для блогов и соцсетей.</p>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Высокое (HQ)</h5>
                         </div>
                         <button onclick="downloadImage('hqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
                             <i class="fa-solid fa-cloud-arrow-down"></i>
-                            <span>Скачать HQ (640px)</span>
+                            <span>Скачать HQ</span>
                         </button>
                     </div>
 
                     <!-- Medium Resolution -->
-                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition group">
+                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition">
                         <div class="space-y-2 mb-4">
                             <div class="flex items-center justify-between">
                                 <span class="px-2.5 py-1 bg-blue-500 text-white text-xs font-bold rounded-lg shadow-sm">Среднее</span>
                                 <span class="text-xs font-mono text-slate-400">320 × 180</span>
                             </div>
-                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Среднее (Medium Quality)</h5>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Компактный размер для превью в комментариях и форумах.</p>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Среднее (MQ)</h5>
                         </div>
                         <button onclick="downloadImage('mqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
                             <i class="fa-solid fa-cloud-arrow-down"></i>
-                            <span>Скачать MQ (320px)</span>
+                            <span>Скачать MQ</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Notification Toast -->
+        <!-- Toast -->
         <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 text-sm font-semibold">
             <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
-            <span id="toastMessage">Ссылка скопирована!</span>
+            <span id="toastMessage">Успешно!</span>
         </div>
 
     </main>
@@ -217,15 +189,13 @@
         <p>&copy; 2026 TubeGrabber by vizquacker. Все права защищены.</p>
     </footer>
 
-    <!-- JavaScript Application Logic -->
+    <!-- JavaScript -->
     <script>
         let currentVideoId = '';
 
-        // Initialize Theme from localStorage or system preference
         function initTheme() {
             const savedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
             if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark');
                 document.getElementById('themeIcon').className = 'fa-solid fa-sun';
@@ -235,11 +205,9 @@
             }
         }
 
-        // Theme Switcher Logic
         function toggleTheme() {
             const html = document.documentElement;
             const themeIcon = document.getElementById('themeIcon');
-            
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
                 themeIcon.className = 'fa-solid fa-moon';
@@ -251,10 +219,8 @@
             }
         }
 
-        // Run theme init immediately
         initTheme();
 
-        // Helper to extract YouTube video ID from various URL formats
         function extractVideoId(url) {
             if (!url) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -262,43 +228,47 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // Load example video
         function loadExample() {
             document.getElementById('videoUrl').value = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
             document.getElementById('grabForm').requestSubmit();
         }
 
-        // Show Toast notification
         function showToast(message) {
             const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMessage');
-            toastMsg.textContent = message;
+            document.getElementById('toastMessage').textContent = message;
             toast.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => {
                 toast.classList.add('translate-y-24', 'opacity-0');
             }, 3000);
         }
 
-        // Handle Form Submission
         function handleGrab(event) {
             event.preventDefault();
             const inputVal = document.getElementById('videoUrl').value.trim();
             const videoId = extractVideoId(inputVal);
 
             if (!videoId) {
-                showToast('❌ Пожалуйста, введите корректную ссылку на YouTube видео');
+                showToast('❌ Введите корректную ссылку на YouTube');
                 return;
             }
 
             currentVideoId = videoId;
-            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
             const previewImg = document.getElementById('previewThumb');
-            previewImg.src = thumbnailUrl;
             
-            previewImg.onerror = function() {
+            // Надежный метод проверки наличия maxresdefault через создание скрытого объекта Image
+            const testImg = new Image();
+            testImg.onload = function() {
+                // Если картинка загрузилась и ее ширина больше стандартной заглушки YouTube (обычно 120px)
+                if (this.width > 120) {
+                    previewImg.src = testImg.src;
+                } else {
+                    previewImg.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                }
+            };
+            testImg.onerror = function() {
                 previewImg.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             };
+            testImg.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
             document.getElementById('videoVideoIdText').textContent = `ID видео: ${videoId}`;
             
@@ -306,48 +276,24 @@
             resultSection.classList.remove('hidden');
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            showToast('✨ Превью успешно загружено!');
+            showToast('✨ Превью загружено!');
         }
 
-        // Real file download function (bypassing CORS via CORS-proxy / Blob)
-        async function downloadImage(quality) {
+        // Прямое открытие картинки для гарантированного скачивания в обход CORS
+        function downloadImage(quality) {
             if (!currentVideoId) return;
             const imageUrl = `https://img.youtube.com/vi/${currentVideoId}/${quality}.jpg`;
-            const proxyUrl = `https://api.allorigins.win/raw?url=` + encodeURIComponent(imageUrl);
             
-            showToast('⏳ Подготовка файла к скачиванию...');
+            // Открываем картинку в новой вкладке или инициируем скачивание через создание ссылки
+            const a = document.createElement('a');
+            a.href = imageUrl;
+            a.target = '_blank';
+            a.download = `youtube-${currentVideoId}-${quality}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
 
-            try {
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = `youtube-thumbnail-${currentVideoId}-${quality}.jpg`;
-                
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-
-                showToast('✅ Файл успешно скачан!');
-            } catch (error) {
-                // Fallback method if proxy fails
-                const a = document.createElement('a');
-                a.href = imageUrl;
-                a.target = '_blank';
-                a.download = `youtube-thumbnail-${currentVideoId}-${quality}.jpg`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-
-                showToast('📥 Загрузка файла начата!');
-            }
+            showToast('📥 Картинка открыта для сохранения!');
         }
     </script>
 </body>
