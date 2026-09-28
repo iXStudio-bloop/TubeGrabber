@@ -3,373 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TubeGrabber</title>
+    <title>TubeGrabber — Скачать превью YouTube видео</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        yt: {
+                            red: '#FF0000',
+                            dark: '#0f0f0f',
+                            card: '#212121',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
+        body {
+            font-family: 'Inter', sans-serif;
         }
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        .animate-pulse-slow {
-            animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .dark .glass-panel {
+            background: rgba(33, 33, 33, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 text-slate-100 min-h-full flex flex-col justify-between">
+<body class="bg-gradient-to-br from-slate-50 via-slate-100 to-rose-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col selection:bg-red-500 selection:text-white">
 
-    <header class="w-full border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-600/30">
-                    <i class="fa-brands fa-youtube text-white text-xl"></i>
+    <!-- Header -->
+    <header class="w-full border-b border-slate-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="location.reload()">
+                <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-500/30 text-white text-xl">
+                    <i class="fa-brands fa-youtube"></i>
                 </div>
-                <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-red-400 bg-clip-text text-transparent">
-                    TubeGrabber <span class="text-xs uppercase px-2 py-0.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded-full font-semibold ml-1">2026</span>
-                </span>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-600 to-rose-500 bg-clip-text text-transparent">TubeGrabber</span>
+                    <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Thumbnail Downloader</span>
+                </div>
             </div>
-            <div class="hidden sm:flex items-center space-x-6 text-sm text-slate-400">
-                <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-400"></i> Без рекламы</span>
-                <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-400"></i> HD / 4K Качество</span>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-zinc-700 transition shadow-sm" aria-label="Сменить тему">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center px-4 py-12">
-        <div class="max-w-3xl w-full mx-auto space-y-8">
-            
-            <!-- Hero Section -->
-            <div class="text-center space-y-4">
-                <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">
-                    Скачивайте видео и аудио <br/>с <span class="text-red-500 underline decoration-red-500/30 decoration-4">YouTube</span> мгновенно
-                </h1>
-                <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto">
-                    Вставьте ссылку на YouTube ролик, выберите желаемый формат (MP4 или MP3) и загрузите файл в один клик.
-                </p>
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-start px-4 sm:px-6 py-10 sm:py-16 max-w-5xl mx-auto w-full">
+        
+        <!-- Hero Section -->
+        <div class="text-center max-w-2xl mx-auto mb-10 space-y-4">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold uppercase tracking-wider mb-2">
+                <i class="fa-solid fa-bolt"></i> Мгновенно и без рекламы
             </div>
-
-            <!-- Search Bar Card -->
-            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-2xl shadow-purple-950/20 backdrop-blur-xl">
-                <form id="searchForm" class="flex flex-col sm:flex-row gap-3">
-                    <div class="relative flex-grow">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                            <i class="fa-solid fa-link text-lg"></i>
-                        </div>
-                        <input 
-                            type="text" 
-                            id="urlInput" 
-                            placeholder="Вставьте ссылку на YouTube (например, https://youtu.be/...)" 
-                            class="w-full pl-11 pr-4 py-4 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 text-sm sm:text-base transition-all"
-                            autocomplete="off"
-                        >
-                    </div>
-                    <button 
-                        type="submit" 
-                        id="searchBtn"
-                        class="bg-red-600 hover:bg-red-500 active:bg-red-700 text-white font-medium px-8 py-4 rounded-xl transition-all shadow-lg shadow-red-600/30 flex items-center justify-center space-x-2 shrink-0 cursor-pointer"
-                    >
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <span>Найти</span>
-                    </button>
-                </form>
-
-                <!-- Quick Examples -->
-                <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-400">
-                    <span class="font-medium text-slate-500">Примеры для теста:</span>
-                    <button type="button" onclick="setExample('https://www.youtube.com/watch?v=dQw4w9WgXcQ')" class="bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300 transition">Rickroll</button>
-                    <button type="button" onclick="setExample('https://www.youtube.com/watch?v=5qap5aO4i9A')" class="bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300 transition">Lo-Fi Beats</button>
-                    <button type="button" onclick="setExample('https://www.youtube.com/watch?v=jNQXAC9IVRw')" class="bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg text-slate-300 transition">Первое видео на YT</button>
-                </div>
-            </div>
-
-            <div id="loaderContainer" class="hidden text-center py-12 space-y-4">
-                <div class="inline-block relative w-16 h-16">
-                    <div class="absolute inset-0 rounded-full border-4 border-slate-800"></div>
-                    <div class="absolute inset-0 rounded-full border-4 border-red-500 border-t-transparent animate-spin"></div>
-                </div>
-                <div class="space-y-1">
-                    <p class="text-white font-semibold text-lg" id="loaderText">Анализируем ссылку и получаем метаданные...</p>
-                    <p class="text-slate-400 text-sm">Пожалуйста, подождите несколько секунд</p>
-                </div>
-            </div>
-
-            <div id="resultContainer" class="hidden bg-slate-900/90 border border-slate-800 rounded-2xl p-6 shadow-2xl backdrop-blur-xl animate-fade-in space-y-6">
-                
-                <!-- Video Metadata Header -->
-                <div class="flex flex-col md:flex-row gap-6 items-start">
-                    <div class="w-full md:w-72 aspect-video bg-slate-950 rounded-xl overflow-hidden relative shadow-md shrink-0 border border-slate-800">
-                        <img id="videoThumbnail" src="" alt="Thumbnail" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/480x360/1e293b/ef4444?text=YouTube+Video'">
-                        <div id="videoDuration" class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-md font-medium">00:00</div>
-                    </div>
-                    <div class="flex-grow space-y-2">
-                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs font-medium border border-emerald-500/20">
-                            <i class="fa-solid fa-circle-check"></i> Видео успешно найдено
-                        </div>
-                        <h2 id="videoTitle" class="text-lg sm:text-xl font-bold text-white line-clamp-2 leading-snug">Название видео появится здесь</h2>
-                        <p id="videoChannel" class="text-sm text-slate-400 font-medium flex items-center gap-2">
-                            <i class="fa-solid fa-user-circle text-slate-500"></i> Автор канала
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Download Options Tabs / Sections -->
-                <div class="border-t border-slate-800 pt-6 space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Доступные форматы для скачивания</h3>
-                        <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
-                            <button onclick="switchTab('video')" id="tabVideo" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white transition">Видео (MP4)</button>
-                            <button onclick="switchTab('audio')" id="tabAudio" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Аудио (MP3)</button>
-                        </div>
-                    </div>
-
-                    <!-- Video Formats List -->
-                    <div id="videoFormatsList" class="space-y-3"></div>
-
-                    <!-- Audio Formats List -->
-                    <div id="audioFormatsList" class="space-y-3 hidden"></div>
-                </div>
-
-            </div>
-
-            <!-- Error Banner -->
-            <div id="errorContainer" class="hidden bg-red-950/40 border border-red-500/30 rounded-2xl p-4 text-center text-red-300 text-sm flex items-center justify-center gap-3">
-                <i class="fa-solid fa-circle-exclamation text-lg text-red-400"></i>
-                <span id="errorMessage">Неверная ссылка или видео не найдено.</span>
-            </div>
-
-            <!-- Download Modal -->
-            <div id="downloadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full mx-4 space-y-6 shadow-2xl text-center">
-                    <div class="w-16 h-16 bg-red-600/20 border border-red-500/30 text-red-500 rounded-2xl flex items-center justify-center mx-auto text-2xl">
-                        <i id="downloadModalIcon" class="fa-solid fa-download animate-bounce"></i>
-                    </div>
-                    <div class="space-y-2">
-                        <h3 id="downloadModalTitle" class="text-lg font-bold text-white">Подготовка файла...</h3>
-                        <p id="downloadModalSub" class="text-sm text-slate-400">Подождите, идет генерация ссылки для загрузки.</p>
-                    </div>
-                    <!-- Progress Bar -->
-                    <div class="w-full bg-slate-950 rounded-full h-3 overflow-hidden border border-slate-800">
-                        <div id="downloadProgressBar" class="bg-gradient-to-r from-red-600 to-amber-500 h-full w-0 transition-all duration-300 rounded-full"></div>
-                    </div>
-                    <div id="downloadActionArea" class="hidden space-y-2">
-                        <a id="realDownloadLink" href="#" target="_blank" class="w-full block bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-emerald-600/30 text-center">
-                            <i class="fa-solid fa-download mr-2"></i> Скачать файл / Открыть конвертер
-                        </a>
-                        <button onclick="closeDownloadModal()" class="mt-2 text-xs text-slate-400 hover:text-white transition">Закрыть окно</button>
-                    </div>
-                </div>
-            </div>
-
+            <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+                Скачать превью с YouTube видео в 1 клик
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-base sm:text-lg">
+                Вставьте ссылку на любое видео YouTube ниже, чтобы получить качественные картинки во всех доступных разрешениях.
+            </p>
         </div>
+
+        <!-- Search Input Card -->
+        <div class="w-full max-w-3xl bg-white dark:bg-zinc-900 rounded-3xl p-4 sm:p-6 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200/80 dark:border-zinc-800 transition-all">
+            <form id="grabForm" onsubmit="handleGrab(event)" class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-link text-lg"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="videoUrl" 
+                        placeholder="https://www.youtube.com/watch?v=..." 
+                        class="w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition text-base font-medium"
+                        autocomplete="off"
+                    >
+                </div>
+                <button 
+                    type="submit" 
+                    class="bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold px-8 py-4 rounded-2xl shadow-lg shadow-red-600/30 transition-all transform active:scale-95 flex items-center justify-center space-x-2 cursor-pointer"
+                >
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Найти превью</span>
+                </button>
+            </form>
+            
+            <!-- Quick Example hints -->
+            <div class="mt-4 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-2 px-1">
+                <span class="flex items-center space-x-1">
+                    <i class="fa-solid fa-circle-info text-red-500"></i>
+                    <span>Поддерживаются ссылки: youtu.be, youtube.com, Shorts</span>
+                </span>
+                <button type="button" onclick="loadExample()" class="text-red-500 dark:text-red-400 hover:underline font-medium">
+                    Вставить пример
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Section (Hidden by default) -->
+        <div id="resultSection" class="w-full max-w-3xl mt-10 hidden space-y-8 animate-fadeIn">
+            
+            <!-- Video Info Card -->
+            <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 shadow-xl border border-slate-200/80 dark:border-zinc-800 flex flex-col md:flex-row gap-6 items-center">
+                <div class="w-full md:w-56 aspect-video rounded-2xl overflow-hidden bg-slate-100 dark:bg-zinc-800 flex-shrink-0 relative shadow-md">
+                    <img id="previewThumb" src="" alt="Thumbnail preview" class="w-full h-full object-cover">
+                    <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">
+                        HD PREVIEW
+                    </span>
+                </div>
+                <div class="flex-grow text-center md:text-left space-y-2 w-full">
+                    <div class="inline-block px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
+                        <i class="fa-solid fa-check-circle"></i> Превью успешно найдено
+                    </div>
+                    <h3 id="videoVideoIdText" class="text-sm font-mono text-slate-400">ID: dQw4w9WgXcQ</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Выберите нужное разрешение ниже для скачивания фотографии в оригинальном качестве на ваше устройство.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Download Buttons Grid -->
+            <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/80 dark:border-zinc-800 space-y-6">
+                <div class="text-center sm:text-left border-b border-slate-100 dark:border-zinc-800 pb-4">
+                    <h4 class="text-lg font-bold text-slate-900 dark:text-white flex items-center justify-center sm:justify-start space-x-2">
+                        <i class="fa-solid fa-download text-red-500"></i>
+                        <span>Доступные разрешения для скачивания</span>
+                    </h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        Все изображения скачиваются напрямую с серверов YouTube в наилучшем качестве.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Max Resolution -->
+                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition group">
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-lg shadow-sm">Максимальное</span>
+                                <span class="text-xs font-mono text-slate-400">1280 × 720</span>
+                            </div>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Макс. разрешение (MaxRes)</h5>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Наивысшее доступное качество превью (HD / 4K источников).</p>
+                        </div>
+                        <button onclick="downloadImage('maxresdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
+                            <i class="fa-solid fa-cloud-arrow-down"></i>
+                            <span>Скачать HD (1280px)</span>
+                        </button>
+                    </div>
+
+                    <!-- High Resolution -->
+                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition group">
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 bg-amber-500 text-white text-xs font-bold rounded-lg shadow-sm">Высокое</span>
+                                <span class="text-xs font-mono text-slate-400">640 × 480</span>
+                            </div>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Высокое (High Quality)</h5>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Отличный баланс качества и скорости загрузки для блогов и соцсетей.</p>
+                        </div>
+                        <button onclick="downloadImage('hqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
+                            <i class="fa-solid fa-cloud-arrow-down"></i>
+                            <span>Скачать HQ (640px)</span>
+                        </button>
+                    </div>
+
+                    <!-- Medium Resolution -->
+                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition group">
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 bg-blue-500 text-white text-xs font-bold rounded-lg shadow-sm">Среднее</span>
+                                <span class="text-xs font-mono text-slate-400">320 × 180</span>
+                            </div>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-base">Среднее (Medium Quality)</h5>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Компактный размер для превью в комментариях и форумах.</p>
+                        </div>
+                        <button onclick="downloadImage('mqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
+                            <i class="fa-solid fa-cloud-arrow-down"></i>
+                            <span>Скачать MQ (320px)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 text-sm font-semibold">
+            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+            <span id="toastMessage">Ссылка скопирована!</span>
+        </div>
+
     </main>
 
-    <footer class="w-full border-t border-slate-800 bg-slate-950 py-6 text-center text-xs text-slate-500">
-        <p>© 2026 TubeGrabber by vizquacker. Все права защищены.</p>
+    <!-- Footer -->
+    <footer class="w-full border-t border-slate-200 dark:border-zinc-800 py-6 text-center text-xs text-slate-400">
+        <p>&copy; 2026 TubeGrabber by vizquacker. Все права защищены.</p>
     </footer>
 
+    <!-- JavaScript Application Logic -->
     <script>
-        let currentVideoUrl = '';
+        let currentVideoId = '';
 
-        function setExample(url) {
-            document.getElementById('urlInput').value = url;
-            document.getElementById('searchForm').requestSubmit();
-        }
-
-        function switchTab(type) {
-            const tabVideo = document.getElementById('tabVideo');
-            const tabAudio = document.getElementById('tabAudio');
-            const videoList = document.getElementById('videoFormatsList');
-            const audioList = document.getElementById('audioFormatsList');
-
-            if (type === 'video') {
-                tabVideo.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white transition';
-                tabAudio.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition';
-                videoList.classList.remove('hidden');
-                audioList.classList.add('hidden');
+        // Initialize Theme from localStorage or system preference
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
             } else {
-                tabAudio.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white transition';
-                tabVideo.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition';
-                audioList.classList.remove('hidden');
-                videoList.classList.add('hidden');
+                document.documentElement.classList.remove('dark');
+                document.getElementById('themeIcon').className = 'fa-solid fa-moon';
             }
         }
 
+        // Theme Switcher Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeIcon.className = 'fa-solid fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                themeIcon.className = 'fa-solid fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Run theme init immediately
+        initTheme();
+
+        // Helper to extract YouTube video ID from various URL formats
         function extractVideoId(url) {
+            if (!url) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        document.getElementById('searchForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const urlInput = document.getElementById('urlInput').value.trim();
-            const loaderContainer = document.getElementById('loaderContainer');
-            const resultContainer = document.getElementById('resultContainer');
-            const errorContainer = document.getElementById('errorContainer');
+        // Load example video
+        function loadExample() {
+            document.getElementById('videoUrl').value = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+            document.getElementById('grabForm').requestSubmit();
+        }
 
-            resultContainer.classList.add('hidden');
-            errorContainer.classList.add('hidden');
+        // Show Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.textContent = message;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
 
-            const videoId = extractVideoId(urlInput);
-            if (!videoId && !urlInput.includes('http')) {
-                showError('Пожалуйста, введите корректную ссылку на YouTube видео.');
+        // Handle Form Submission
+        function handleGrab(event) {
+            event.preventDefault();
+            const inputVal = document.getElementById('videoUrl').value.trim();
+            const videoId = extractVideoId(inputVal);
+
+            if (!videoId) {
+                showToast('❌ Пожалуйста, введите корректную ссылку на YouTube видео');
                 return;
             }
 
-            currentVideoUrl = urlInput;
-            loaderContainer.classList.remove('hidden');
+            currentVideoId = videoId;
+            const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
+            const previewImg = document.getElementById('previewThumb');
+            previewImg.src = thumbnailUrl;
+            
+            previewImg.onerror = function() {
+                previewImg.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            };
+
+            document.getElementById('videoVideoIdText').textContent = `ID видео: ${videoId}`;
+            
+            const resultSection = document.getElementById('resultSection');
+            resultSection.classList.remove('hidden');
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            showToast('✨ Превью успешно загружено!');
+        }
+
+        // Real file download function (bypassing CORS via CORS-proxy / Blob)
+        async function downloadImage(quality) {
+            if (!currentVideoId) return;
+            const imageUrl = `https://img.youtube.com/vi/${currentVideoId}/${quality}.jpg`;
+            const proxyUrl = `https://api.allorigins.win/raw?url=` + encodeURIComponent(imageUrl);
+            
+            showToast('⏳ Подготовка файла к скачиванию...');
 
             try {
-                let videoData = null;
-                const oembedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId || 'dQw4w9WgXcQ'}&format=json`;
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error('Network response was not ok');
                 
-                try {
-                    const response = await fetch(oembedUrl);
-                    if (response.ok) {
-                        const json = await response.json();
-                        videoData = {
-                            title: json.title || "YouTube Видео по ссылке",
-                            author: json.author_name || "YouTube Автор",
-                            thumbnail: json.thumbnail_url || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-                            duration: "3:45"
-                        };
-                    }
-                } catch(err) {
-                    console.warn("oEmbed warning", err);
-                }
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = `youtube-thumbnail-${currentVideoId}-${quality}.jpg`;
+                
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
 
-                if (!videoData) {
-                    const activeId = videoId || 'dQw4w9WgXcQ';
-                    videoData = {
-                        title: `YouTube Ролик (ID: ${activeId})`,
-                        author: "YouTube Creator",
-                        thumbnail: `https://img.youtube.com/vi/${activeId}/hqdefault.jpg`,
-                        duration: "4:20"
-                    };
-                }
+                showToast('✅ Файл успешно скачан!');
+            } catch (error) {
+                // Fallback method if proxy fails
+                const a = document.createElement('a');
+                a.href = imageUrl;
+                a.target = '_blank';
+                a.download = `youtube-thumbnail-${currentVideoId}-${quality}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
 
-                setTimeout(() => {
-                    loaderContainer.classList.add('hidden');
-                    renderResults(videoData);
-                }, 600);
-
-            } catch (err) {
-                loaderContainer.classList.add('hidden');
-                showError('Не удалось найти информацию по данному видео. Проверьте правильность ссылки.');
+                showToast('📥 Загрузка файла начата!');
             }
-        });
-
-        function showError(msg) {
-            const errorContainer = document.getElementById('errorContainer');
-            document.getElementById('errorMessage').innerText = msg;
-            errorContainer.classList.remove('hidden');
-        }
-
-        function renderResults(data) {
-            document.getElementById('videoTitle').innerText = data.title;
-            document.getElementById('videoChannel').innerHTML = `<i class="fa-solid fa-user-circle text-slate-500"></i> ${data.author}`;
-            document.getElementById('videoThumbnail').src = data.thumbnail;
-            document.getElementById('videoDuration').innerText = data.duration;
-
-            const videoFormats = [
-                { quality: '1080p (Full HD)', format: 'MP4', size: '~145 MB', tag: 'HD' },
-                { quality: '720p (HD)', format: 'MP4', size: '~68 MB', tag: 'Standard' },
-                { quality: '480p', format: 'MP4', size: '~34 MB', tag: 'SD' },
-                { quality: '360p', format: 'MP4', size: '~18 MB', tag: 'Low' }
-            ];
-
-            const audioFormats = [
-                { quality: 'MP3 Audio (320 kbps)', format: 'MP3', size: '~9.2 MB', tag: 'High Quality' },
-                { quality: 'MP3 Audio (192 kbps)', format: 'MP3', size: '~5.5 MB', tag: 'Standard' },
-                { quality: 'M4A Audio', format: 'M4A', size: '~4.8 MB', tag: 'Compressed' }
-            ];
-
-            const videoListEl = document.getElementById('videoFormatsList');
-            videoListEl.innerHTML = videoFormats.map((f) => `
-                <div class="flex items-center justify-between p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 transition">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 font-bold text-xs">
-                            ${f.format}
-                        </div>
-                        <div>
-                            <p class="font-semibold text-white text-sm">${f.quality}</p>
-                            <p class="text-xs text-slate-400">Примерный размер: ${f.size} • <span class="text-red-400">${f.tag}</span></p>
-                        </div>
-                    </div>
-                    <button onclick="startDownload('${f.format}', '${data.title}')" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs font-semibold transition shadow-md flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-download"></i> Скачать
-                    </button>
-                </div>
-            `).join('');
-
-            const audioListEl = document.getElementById('audioFormatsList');
-            audioListEl.innerHTML = audioFormats.map((f) => `
-                <div class="flex items-center justify-between p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 transition">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-xs">
-                            ${f.format}
-                        </div>
-                        <div>
-                            <p class="font-semibold text-white text-sm">${f.quality}</p>
-                            <p class="text-xs text-slate-400">Примерный размер: ${f.size} • <span class="text-amber-400">${f.tag}</span></p>
-                        </div>
-                    </div>
-                    <button onclick="startDownload('MP3', '${data.title}')" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-lg text-xs font-semibold transition shadow-md flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-download"></i> Скачать
-                    </button>
-                </div>
-            `).join('');
-
-            document.getElementById('resultContainer').classList.remove('hidden');
-            document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function startDownload(fileType, videoTitle) {
-            const modal = document.getElementById('downloadModal');
-            const progressBar = document.getElementById('downloadProgressBar');
-            const modalTitle = document.getElementById('downloadModalTitle');
-            const modalSub = document.getElementById('downloadModalSub');
-            const actionArea = document.getElementById('downloadActionArea');
-            const realLink = document.getElementById('realDownloadLink');
-
-            modal.classList.remove('hidden');
-            progressBar.style.width = '0%';
-            actionArea.classList.add('hidden');
-            modalTitle.innerText = 'Подготовка ссылки...';
-            modalSub.innerText = `Конвертация в ${fileType} для: ${videoTitle}`;
-
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 25;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    
-                    modalTitle.innerText = 'Готово к скачиванию!';
-                    modalSub.innerText = `Файл успешно обработан системой.`;
-                    actionArea.classList.remove('hidden');
-
-                    // Интеграция с быстрыми публичными конвертерами для выдачи рабочей ссылки
-                    const encodedUrl = encodeURIComponent(currentVideoUrl || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
-                    if (fileType === 'MP3') {
-                        realLink.href = `https://loader.to/api/button/?url=${encodedUrl}&f=mp3`;
-                    } else {
-                        realLink.href = `https://loader.to/api/button/?url=${encodedUrl}&f=1080`;
-                    }
-                    realLink.innerHTML = `<i class="fa-solid fa-download mr-2"></i> Загрузить ${fileType} файл`;
-                }
-                progressBar.style.width = progress + '%';
-            }, 250);
-        }
-
-        function closeDownloadModal() {
-            document.getElementById('downloadModal').classList.add('hidden');
         }
     </script>
 </body>
