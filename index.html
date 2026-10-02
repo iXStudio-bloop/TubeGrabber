@@ -37,7 +37,7 @@
                         <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-600 to-rose-500 bg-clip-text text-transparent">TubeGrabber</span>
                         <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Thumbnail Downloader</span>
                     </div>
-                    <!-- Мини-фрейм PRO в левом верхнем углу -->
+                    <!-- Мини-фрейм PRO -->
                     <span id="proBadgeHeader" class="hidden px-2 py-0.5 text-[10px] font-extrabold tracking-wider text-white bg-gradient-to-r from-amber-500 to-orange-500 rounded-md shadow-md shadow-amber-500/20 uppercase border border-amber-300/30">
                         PRO
                     </span>
@@ -123,11 +123,9 @@
                     <div class="inline-block px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
                         <i class="fa-solid fa-check-circle"></i> Превью успешно найдено
                     </div>
-                    <!-- Название видео -->
                     <h3 id="videoTitle" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug">
                         Загрузка названия...
                     </h3>
-                    <!-- Автор и ID видео -->
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                         <span id="videoAuthor" class="font-medium text-slate-700 dark:text-slate-300">
                             <i class="fa-solid fa-user text-red-500 mr-1"></i>-
@@ -147,7 +145,6 @@
                         <i class="fa-solid fa-image text-red-500"></i>
                         <span>Доступные разрешения картинки</span>
                     </h4>
-                    <!-- Кнопка вызова инструкции -->
                     <button onclick="openModal('instructionsModal')" class="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-zinc-800 hover:bg-red-100 dark:hover:bg-zinc-700 px-3 py-2 rounded-xl transition flex items-center space-x-1.5 cursor-pointer">
                         <i class="fa-solid fa-circle-question"></i>
                         <span>Как скачать картинку?</span>
@@ -216,7 +213,7 @@
             </div>
         </div>
 
-        <!-- Toast -->
+        <!-- Toast Notification -->
         <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 text-sm font-semibold pointer-events-none">
             <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
             <span id="toastMessage">Успешно!</span>
@@ -238,7 +235,6 @@
             </div>
 
             <div class="space-y-6 text-sm text-slate-600 dark:text-slate-300">
-                <!-- PC Instruction -->
                 <div class="space-y-2 bg-slate-50 dark:bg-zinc-800/50 p-4 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60">
                     <div class="flex items-center space-x-2 font-bold text-slate-900 dark:text-white text-base">
                         <i class="fa-solid fa-laptop text-red-500"></i>
@@ -251,7 +247,6 @@
                     </ol>
                 </div>
 
-                <!-- Phone Instruction -->
                 <div class="space-y-2 bg-slate-50 dark:bg-zinc-800/50 p-4 rounded-2xl border border-slate-200/60 dark:border-zinc-700/60">
                     <div class="flex items-center space-x-2 font-bold text-slate-900 dark:text-white text-base">
                         <i class="fa-solid fa-mobile-screen text-red-500"></i>
@@ -291,7 +286,6 @@
                     <p class="text-xs text-slate-500 dark:text-slate-400">Единоразовая покупка. Навсегда ваш аккаунт без ограничений.</p>
                 </div>
 
-                <!-- Плюсы PRO -->
                 <div class="space-y-3">
                     <div class="flex items-start space-x-3 bg-amber-500/10 p-3.5 rounded-2xl border border-amber-500/20">
                         <i class="fa-solid fa-bolt text-amber-500 text-lg mt-0.5"></i>
@@ -318,7 +312,6 @@
                     </div>
                 </div>
 
-                <!-- Промокоды -->
                 <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">Есть промокод?</label>
                     <div class="flex gap-2">
@@ -330,7 +323,6 @@
                     <p id="promoStatus" class="text-[11px] hidden font-semibold"></p>
                 </div>
 
-                <!-- Цена и кнопка оплаты -->
                 <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 text-center space-y-4">
                     <div class="flex items-center justify-center space-x-3">
                         <span id="oldPrice" class="text-lg text-slate-400 line-through font-bold hidden">$2.00</span>
@@ -372,7 +364,7 @@
         </div>
     </div>
 
-    <!-- Download Delay Modal (Для обычных пользователей) -->
+    <!-- Download Delay Modal -->
     <div id="delayModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-sm w-full mx-4 p-6 text-center shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300">
             <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-2xl font-black">
@@ -389,89 +381,238 @@
         </div>
     </div>
 
-    <!-- Modal: Политика конфиденциальности -->
+    <!-- Modal: Политика конфиденциальности (ОБНОВЛЕНО ПОЛНЫМ ТЕКСТОМ) -->
     <div id="privacyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-xl w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300 max-h-[85vh] overflow-y-auto">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-800 mb-6">
-                <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-user-shield text-red-500"></i>
-                    <span>Политика конфиденциальности</span>
-                </h3>
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-2xl w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-800 mb-6 sticky top-0 bg-white dark:bg-zinc-900 z-10">
+                <div>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-user-shield text-red-500"></i>
+                        <span>ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-0.5">Дата публикации: 01 августа 2026 г.</p>
+                </div>
                 <button onclick="closeModal('privacyModal')" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-500 hover:bg-slate-200 dark:hover:bg-zinc-700 transition cursor-pointer">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <div class="space-y-5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <!-- 1. Общие положения -->
                 <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
-                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">1. Сбор и обработка данных</h5>
-                    <p class="text-slate-500 dark:text-slate-400">
-                        Сервис <strong class="text-slate-800 dark:text-slate-200">TubeGrabber</strong> не собирает, не хранит и не передает третьим лицам личные персональные данные пользователей. Все поисковые запросы выполняются напрямую в вашем браузере.
-                    </p>
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">1. Общие положения</h5>
+                    <p><strong>1.1.</strong> Настоящая Политика конфиденциальности (далее — «Политика») регулирует порядок обработки и защиты информации, которую веб-сервис TubeGrabber (далее — «Сервис») может получать о Пользователе во время использования им сайта и его функций.</p>
+                    <p><strong>1.2.</strong> Используя Сервис, Пользователь выражает свое полное согласие с условиями настоящей Политики. В случае несогласия с этими условиями Пользователь должен прекратить использование Сервиса.</p>
                 </div>
 
+                <!-- 2. Сбор информации -->
                 <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
-                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">2. Локальное хранилище (LocalStorage)</h5>
-                    <p class="text-slate-500 dark:text-slate-400">
-                        Мы используем встроенное хранилище браузера (LocalStorage) только для сохранения ваших предпочтений: выбранной темы оформления (светлая/темная) и статуса активации PRO версии.
-                    </p>
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">2. Сбор информации</h5>
+                    <p><strong>2.1.</strong> Сервис может собирать следующие типы обезличенных и технических данных:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>техническую информацию (IP-адрес, тип и версия браузера, операционная система, язык интерфейса, файлы cookie);</li>
+                        <li>данные об использовании Сервиса (история запросов обработки медиафайлов, выбранные настройки разрешения, время посещений);</li>
+                        <li>технические идентификаторы транзакций при оплате PRO-доступа (уникальные ID платежей, передаваемые платёжным шлюзом).</li>
+                    </ul>
+                    <p><strong>2.2.</strong> Сервис не требует от Пользователя предоставления паспортных данных, адресов проживания или иных персональных данных, кроме минимально необходимых для технического обеспечения работы сайта и обработки обращений в поддержку.</p>
+                    <p><strong>2.3.</strong> Сервис не хранит и не обрабатывает полные данные банковских карт. Все платежные операции проводятся на стороне защищенных платёжных провайдеров.</p>
                 </div>
 
+                <!-- 3. Цели использования информации -->
                 <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
-                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">3. Внешние ссылки</h5>
-                    <p class="text-slate-500 dark:text-slate-400">
-                        Все ссылки на обложки ведут непосредственно на официальные публичные серверы YouTube. Сервис не загружает сторонний вредоносный код.
-                    </p>
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">3. Цели использования информации</h5>
+                    <p><strong>3.1.</strong> Полученная информация используется исключительно для:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>обеспечения стабильной работы и корректного отображения функционала Сервиса;</li>
+                        <li>предоставления оплаченного PRO-доступа и снятия технических ограничений;</li>
+                        <li>обратной связи с Пользователем (обработка запросов в поддержку);</li>
+                        <li>защиты от злоупотреблений, спама и DDoS-атак;</li>
+                        <li>анализа производительности и улучшения работы Сервиса.</li>
+                    </ul>
+                </div>
+
+                <!-- 4. Передача информации третьим лицам -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">4. Передача информации третьим лицам</h5>
+                    <p><strong>4.1.</strong> Администрация не продаёт, не передаёт и не разглашает данные Пользователей третьим лицам, за исключением случаев:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>выполнения требований действующего законодательства;</li>
+                        <li>необходимости исполнения обязательств перед Пользователем (взаимодействие с платёжными системами для проведения транзакций);</li>
+                        <li>получения явного согласия Пользователя.</li>
+                    </ul>
+                </div>
+
+                <!-- 5. Хранение и защита данных -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">5. Хранение и защита данных</h5>
+                    <p><strong>5.1.</strong> Данные хранятся в течение срока, необходимого для выполнения указанных в Политике целей.</p>
+                    <p><strong>5.2.</strong> Администрация применяет общепринятые стандарты безопасности для защиты информации от несанкционированного доступа, изменения или уничтожения, однако не может гарантировать абсолютную защищенность данных при передаче через сеть Интернет.</p>
+                </div>
+
+                <!-- 6. Отказ от ответственности -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">6. Отказ от ответственности</h5>
+                    <p><strong>6.1.</strong> Передача информации через Интернет всегда сопряжена с рисками. Пользователь самостоятельно несёт ответственность за безопасность своих устройств и каналов связи.</p>
+                    <p><strong>6.2.</strong> Администрация не несёт ответственности за действия третьих лиц, получивших доступ к информации Пользователя в результате несанкционированного доступа к устройству самого Пользователя.</p>
+                </div>
+
+                <!-- 7. Изменения в Политике -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">7. Изменения в Политике</h5>
+                    <p><strong>7.1.</strong> Администрация оставляет за собой право изменять условия Политики в любое время без предварительного уведомления.</p>
+                    <p><strong>7.2.</strong> Новая редакция Политики вступает в силу с момента ее публикации на сайте Сервиса. Продолжение использования Сервиса означает принятие новой редакции.</p>
+                </div>
+
+                <!-- 8. Контакты и поддержка -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">8. Контакты и поддержка</h5>
+                    <p><strong>8.1.</strong> Вопросы и предложения по Политике конфиденциальности направляются по следующим контактам:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>Электронная почта: <a href="mailto:vizquacker.dev@gmail.com" class="text-red-500 hover:underline">vizquacker.dev@gmail.com</a></li>
+                        <li>Telegram: <a href="https://t.me/vizquacker" target="_blank" class="text-red-500 hover:underline">@vizquacker</a></li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800 text-center">
+            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800 text-center sticky bottom-0 bg-white dark:bg-zinc-900">
                 <button onclick="closeModal('privacyModal')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold py-3 px-6 rounded-xl hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white transition shadow-md cursor-pointer">
-                    Закрыть
+                    Понятно
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Пользовательское соглашение -->
+    <!-- Modal: Пользовательское соглашение (ОБНОВЛЕНО ПОЛНЫМ ТЕКСТОМ) -->
     <div id="termsModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-xl w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300 max-h-[85vh] overflow-y-auto">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-800 mb-6">
-                <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center space-x-2">
-                    <i class="fa-solid fa-file-contract text-red-500"></i>
-                    <span>Пользовательское соглашение</span>
-                </h3>
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-2xl w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300 max-h-[85vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-800 mb-6 sticky top-0 bg-white dark:bg-zinc-900 z-10">
+                <div>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-file-contract text-red-500"></i>
+                        <span>ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-0.5">Дата публикации: 01 августа 2026 г.</p>
+                </div>
                 <button onclick="closeModal('termsModal')" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-500 hover:bg-slate-200 dark:hover:bg-zinc-700 transition cursor-pointer">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <div class="space-y-5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <!-- 1. Общие положения -->
                 <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
-                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">1. Предмет соглашения</h5>
-                    <p class="text-slate-500 dark:text-slate-400">
-                        Используя веб-сайт TubeGrabber, вы принимаете настоящие условия. Сервис предоставляется на условиях «как есть» (As Is) исключительно для персонального удобства получения изображений превью.
-                    </p>
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">1. Общие положения</h5>
+                    <p><strong>1.1.</strong> Настоящее Пользовательское соглашение (далее — «Соглашение») регулирует порядок использования веб-сервиса TubeGrabber (далее — «Сервис»), предоставляемого Администрацией.</p>
+                    <p><strong>1.2.</strong> Используя Сервис, включая просмотр страниц сайта, использование функционала скачивания/обработки медиаматериалов, оплату подписки (PRO-доступа) или обращение в поддержку, Пользователь подтверждает, что полностью ознакомился с условиями настоящего Соглашения и принимает их в полном объёме.</p>
+                    <p><strong>1.3.</strong> В случае несогласия с условиями Соглашения Пользователь обязан немедленно прекратить использование Сервиса.</p>
                 </div>
 
+                <!-- 2. Характер услуг и цифровых товаров -->
                 <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
-                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">2. Авторские права</h5>
-                    <p class="text-slate-500 dark:text-slate-400">
-                        Все права на изображения превью принадлежат соответствующим владельцам контента на платформе YouTube. Пользователь обязуется не использовать скачанные материалы в противоправных целях.
-                    </p>
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">2. Характер услуг и цифровых товаров</h5>
+                    <p><strong>2.1.</strong> Сервис предоставляет цифровые услуги и функционал нематериального характера, включая: доступ к онлайн-инструментам загрузки и обработки медиаконтента, расширенные функции интерфейса (отмена задержек, выбор повышенного разрешения HD 1280×720), статус PRO-пользователя и приоритетную поддержку.</p>
+                    <p><strong>2.2.</strong> Материалы и функции, предоставляемые через Сервис, могут включать:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>информацию и медиаданные из открытых источников;</li>
+                        <li>алгоритмы обработки, систематизации и конвертации данных;</li>
+                        <li>сервисные инструменты и веб-интерфейсы.</li>
+                    </ul>
+                    <p><strong>2.3.</strong> Пользователь осознаёт и соглашается, что ценность цифровых услуг Сервиса заключается в предоставлении технического инструментария, скорости обработки, удобстве веб-интерфейса, сопровождении и обновлениях, а не в эксклюзивности самих исходных файлов или информации.</p>
+                    <p><strong>2.4.</strong> Сервис не заявляет и не гарантирует уникальность, исключительность или недоступность исходных медиаматериалов вне Сервиса.</p>
                 </div>
 
+                <!-- 3. Отказ от гарантий и ответственности -->
                 <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
-                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">3. Статус PRO</h5>
-                    <p class="text-slate-500 dark:text-slate-400">
-                        Подписка PRO дает пользователю постоянный доступ к HD разрешению и убирает таймер ожидания на устройстве, где произведена активация.
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">3. Отказ от гарантий и ответственности</h5>
+                    <p><strong>3.1.</strong> Сервис предоставляется на условиях «AS IS» («как есть»).</p>
+                    <p><strong>3.2.</strong> Администрация не гарантирует:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>соответствие Сервиса субъективным ожиданиям Пользователя;</li>
+                        <li>непрерывную доступность конкретных сторонних платформ или видеохостингов;</li>
+                        <li>бесперебойную и безошибочную работу Сервиса во всех браузерах и на всех устройствах.</li>
+                    </ul>
+                    <p><strong>3.3.</strong> Администрация не несёт ответственности за:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>любые прямые или косвенные убытки, возникшие в результате использования или невозможности использования Сервиса;</li>
+                        <li>действия или бездействие третьих лиц, а также сторонних сервисов и провайдеров;</li>
+                        <li>временные технические сбои, профилактические работы и ограничения доступа.</li>
+                    </ul>
+                    <p><strong>3.4.</strong> Все решения об использовании функционала Сервиса и загруженных с его помощью материалов принимаются Пользователем самостоятельно и под его собственную ответственность.</p>
+                </div>
+
+                <!-- 4. Законность использования -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">4. Законность использования</h5>
+                    <p><strong>4.1.</strong> Сервис не предназначен для поощрения, организации или содействия нарушению авторских прав и иной противоправной деятельности.</p>
+                    <p><strong>4.2.</strong> Пользователь обязуется использовать Сервис исключительно в личных целях и в рамках применимого законодательства, а также правил сторонних платформ.</p>
+                    <p><strong>4.3.</strong> Ответственность за соблюдение авторских и смежных прав при скачивании или использовании материалов полностью возлагается на Пользователя.</p>
+                </div>
+
+                <!-- 5. Интеллектуальная собственность -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">5. Интеллектуальная собственность</h5>
+                    <p><strong>5.1.</strong> Все элементы веб-интерфейса, дизайн, логотипы, программный код и элементы оформления TubeGrabber охраняются законодательством об интеллектуальной собственности.</p>
+                    <p><strong>5.2.</strong> Пользователю запрещается копировать, декомпилировать, модифицировать, перепродавать или перегружать инфраструктуру Сервиса без письменного разрешения Администрации.</p>
+                    <p><strong>5.3.</strong> Нарушение правил может повлечь за собой блокировку доступа к Сервису без возврата средств.</p>
+                </div>
+
+                <!-- 6. Ограничение доступа -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">6. Ограничение доступа</h5>
+                    <p><strong>6.1.</strong> Администрация вправе приостановить или ограничить доступ Пользователя к Сервису в случае:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>нарушения условий настоящего Соглашения;</li>
+                        <li>выявления попыток автоматизированного злоупотребления (DDoS, парсинг, спам-запросы);</li>
+                        <li>требований законодательства или платёжных провайдеров.</li>
+                    </ul>
+                    <p><strong>6.2.</strong> Администрация оставляет за собой право отказывать в обслуживании Пользователям, чьи действия создают повышенные технические или юридические риски для Сервиса.</p>
+                </div>
+
+                <!-- 7. Платежи и возвраты -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">7. Платежи и возвраты</h5>
+                    <p><strong>7.1.</strong> Оплата платного функционала (PRO-доступа) производится на условиях, указанных в интерфейсе Сервиса до момента оплаты.</p>
+                    <p><strong>7.2.</strong> В связи с нематериальным характером цифровых услуг и моментальным предоставлением доступа к функционалу, возврат денежных средств после успешной активации услуги не осуществляется, за исключением случаев, указанных в п. 7.3.</p>
+                    <p><strong>7.3.</strong> Возврат средств возможен только если:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>оплаченная услуга фактически не была предоставлена по технической вине Сервиса;</li>
+                        <li>произошел технический сбой платёжной системы (двойное списание).</li>
+                    </ul>
+                    <p><strong>7.4.</strong> Для рассмотрения вопроса о возврате Пользователь обязан обратиться в службу поддержки в течение 24 часов с момента оплаты.</p>
+                    <p><strong>7.5.</strong> Пользователь подтверждает, что обязуется не инициировать возврат платежа (chargeback) через банк-эмитент или платёжную систему без предварительного обращения в поддержку Сервиса.</p>
+                </div>
+
+                <!-- 8. Конфиденциальность -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">8. Конфиденциальность</h5>
+                    <p><strong>8.1.</strong> Порядок сбора, обработки и защиты информации пользователей определяется Политикой конфиденциальности Сервиса.</p>
+                </div>
+
+                <!-- 9. Изменение условий -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">9. Изменение условий</h5>
+                    <p><strong>9.1.</strong> Администрация вправе в одностороннем порядке вносить изменения в настоящее Соглашение.</p>
+                    <p><strong>9.2.</strong> Актуальная версия Соглашения всегда доступна на сайте Сервиса.</p>
+                    <p><strong>9.3.</strong> Продолжение использования Сервиса означает полное согласие Пользователя с обновлёнными условиями.</p>
+                </div>
+
+                <!-- 10. Контактная информация -->
+                <div class="bg-slate-50 dark:bg-zinc-800/40 p-4 rounded-2xl space-y-2 border border-slate-200/60 dark:border-zinc-700/50">
+                    <h5 class="font-bold text-slate-900 dark:text-white text-sm">10. Контактная информация</h5>
+                    <p><strong>10.1.</strong> По всем вопросам, связанным с работой Сервиса, оплатой и поддержкой, Пользователь может обратиться к Администрации:</p>
+                    <ul class="list-disc list-inside pl-2 space-y-1 text-slate-500 dark:text-slate-400">
+                        <li>Электронная почта: <a href="mailto:vizquacker.dev@gmail.com" class="text-red-500 hover:underline">vizquacker.dev@gmail.com</a></li>
+                        <li>Telegram: <a href="https://t.me/vizquacker" target="_blank" class="text-red-500 hover:underline">@vizquacker</a></li>
+                    </ul>
+                    <p class="pt-2 text-slate-500 dark:text-slate-400 font-medium">
+                        Используя Сервис TubeGrabber (в том числе переходя на сайт и/или оформляя PRO-доступ), Пользователь подтверждает, что ознакомлен с настоящим Соглашением и принимает его условия в полном объёме.
                     </p>
                 </div>
             </div>
 
-            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800 text-center">
+            <div class="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800 text-center sticky bottom-0 bg-white dark:bg-zinc-900">
                 <button onclick="closeModal('termsModal')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold py-3 px-6 rounded-xl hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white transition shadow-md cursor-pointer">
-                    Принимаю
+                    Принимаю условия
                 </button>
             </div>
         </div>
@@ -479,7 +620,6 @@
 
     <!-- Footer -->
     <footer class="w-full border-t border-slate-200 dark:border-zinc-800 py-6 text-center text-xs text-slate-400 space-y-3">
-        <!-- Ссылки на документы и контакты -->
         <div class="flex flex-wrap justify-center items-center gap-2 md:gap-4 font-medium text-slate-600 dark:text-slate-300 px-4">
             <button onclick="openModal('privacyModal')" class="hover:text-red-500 transition cursor-pointer">
                 Политика конфиденциальности
@@ -498,7 +638,6 @@
             </a>
         </div>
 
-        <!-- Копирайт и кодовое слово -->
         <p>&copy; 2026 TubeGrabber by vizquacker. Все права защищены. <span class="text-slate-300 dark:text-zinc-700 ml-2">Платега тест</span></p>
     </footer>
 
@@ -513,7 +652,7 @@
             return localStorage.getItem('isPro') === 'true';
         }
 
-        // Обновление отображения PRO на сайте
+        // Обновление интерфейса PRO
         function updateProUI() {
             const badge = document.getElementById('proBadgeHeader');
             const proBtnText = document.getElementById('proHeaderBtnText');
@@ -572,7 +711,7 @@
             }
         }
 
-        // Общие функции открытия и закрытия модальных окон
+        // Функции модалок
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
             if (!modal) return;
@@ -597,7 +736,6 @@
             }
         }
 
-        // Открытие PRO модального окна в зависимости от статуса
         function openProModal() {
             const buyView = document.getElementById('proModalBuyView');
             const activeView = document.getElementById('proModalActiveView');
@@ -612,7 +750,6 @@
             openModal('proModal');
         }
 
-        // Функция сброса подписки PRO
         function resetPro() {
             localStorage.removeItem('isPro');
             updateProUI();
@@ -620,7 +757,6 @@
             showToast('Подписка PRO сброшена!');
         }
 
-        // Активация PRO
         function payPro() {
             localStorage.setItem('isPro', 'true');
             updateProUI();
@@ -628,7 +764,6 @@
             showToast('Подписка PRO успешно активирована!');
         }
 
-        // Применение промокода
         function applyPromo() {
             const input = document.getElementById('promoInput');
             const status = document.getElementById('promoStatus');
@@ -648,7 +783,6 @@
             }
         }
 
-        // Показ всплывающего уведомления (Toast)
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             const toastIcon = document.getElementById('toastIcon');
@@ -667,7 +801,6 @@
             }, 3000);
         }
 
-        // Извлечение ID видео из ссылки
         function extractVideoId(url) {
             if (!url) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -675,13 +808,11 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // Загрузка примера
         function loadExample() {
             document.getElementById('videoUrl').value = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
             document.getElementById('grabForm').requestSubmit();
         }
 
-        // Обработка отправки формы
         async function handleGrab(event) {
             event.preventDefault();
             const inputVal = document.getElementById('videoUrl').value.trim();
@@ -694,21 +825,17 @@
 
             currentVideoId = videoId;
 
-            // Отображение превью
             const previewImg = document.getElementById('previewThumb');
             previewImg.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-            // Установка стандартных подписей
             document.getElementById('videoTitle').textContent = 'Загрузка названия...';
             document.getElementById('videoAuthor').innerHTML = '<i class="fa-solid fa-user text-red-500 mr-1"></i>Загрузка...';
             document.getElementById('videoVideoIdText').textContent = `ID: ${videoId}`;
 
-            // Показ результатов
             const resultSection = document.getElementById('resultSection');
             resultSection.classList.remove('hidden');
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            // Запрос информации через oEmbed API
             try {
                 const response = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
                 if (response.ok) {
@@ -727,7 +854,6 @@
             showToast('Превью успешно найдено!');
         }
 
-        // Открытие картинок
         function requestImage(quality) {
             if (!currentVideoId) {
                 showToast('Сначала введите ссылку на видео!', true);
@@ -747,7 +873,6 @@
                 return;
             }
 
-            // Таймер ожидания для бесплатной версии
             pendingQuality = quality;
             openModal('delayModal');
             let timeLeft = 5;
@@ -772,7 +897,6 @@
             openProModal();
         }
 
-        // Инициализация при старте
         initTheme();
         updateProUI();
     </script>
