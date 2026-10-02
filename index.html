@@ -368,7 +368,7 @@
         let currentVideoId = '';
         let pendingQuality = '';
         let delayTimer = null;
-        let discountMultiplier = 1; // 1 = 100% цены
+        let discountMultiplier = 1;
 
         // Проверка статуса PRO
         function isPro() {
@@ -383,18 +383,22 @@
             const maxresIcon = document.getElementById('maxresBtnIcon');
 
             if (isPro()) {
-                badge.classList.remove('hidden');
-                proBtnText.textContent = 'PRO Активен';
-                proBtn.classList.remove('from-amber-500', 'to-orange-500');
-                proBtn.classList.add('from-emerald-500', 'to-teal-600');
+                if (badge) badge.classList.remove('hidden');
+                if (proBtnText) proBtnText.textContent = 'PRO Активен';
+                if (proBtn) {
+                    proBtn.classList.remove('from-amber-500', 'to-orange-500');
+                    proBtn.classList.add('from-emerald-500', 'to-teal-600');
+                }
                 if (maxresIcon) {
                     maxresIcon.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i>';
                 }
             } else {
-                badge.classList.add('hidden');
-                proBtnText.textContent = 'Купить Pro';
-                proBtn.classList.remove('from-emerald-500', 'to-teal-600');
-                proBtn.classList.add('from-amber-500', 'to-orange-500');
+                if (badge) badge.classList.add('hidden');
+                if (proBtnText) proBtnText.textContent = 'Купить Pro';
+                if (proBtn) {
+                    proBtn.classList.remove('from-emerald-500', 'to-teal-600');
+                    proBtn.classList.add('from-amber-500', 'to-orange-500');
+                }
                 if (maxresIcon) {
                     maxresIcon.innerHTML = '<i class="fa-solid fa-lock text-amber-400"></i>';
                 }
@@ -406,10 +410,12 @@
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
                 document.documentElement.classList.add('dark');
-                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+                const themeIcon = document.getElementById('themeIcon');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
             } else {
                 document.documentElement.classList.remove('dark');
-                document.getElementById('themeIcon').className = 'fa-solid fa-moon';
+                const themeIcon = document.getElementById('themeIcon');
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
             }
         }
 
@@ -418,11 +424,11 @@
             const themeIcon = document.getElementById('themeIcon');
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
-                themeIcon.className = 'fa-solid fa-moon';
+                if (themeIcon) themeIcon.className = 'fa-solid fa-moon';
                 localStorage.setItem('theme', 'light');
             } else {
                 html.classList.add('dark');
-                themeIcon.className = 'fa-solid fa-sun';
+                if (themeIcon) themeIcon.className = 'fa-solid fa-sun';
                 localStorage.setItem('theme', 'dark');
             }
         }
@@ -498,83 +504,81 @@
                     } else {
                         document.getElementById('videoTitle').textContent = 'Название недоступно';
                     }
-                    
                     if (data.author_name) {
                         document.getElementById('videoAuthor').innerHTML = `<i class="fa-solid fa-user text-red-500 mr-1"></i>${data.author_name}`;
                     } else {
-                        document.getElementById('videoAuthor').innerHTML = `<i class="fa-solid fa-user text-red-500 mr-1"></i>Неизвестный автор`;
+                        document.getElementById('videoAuthor').innerHTML = '<i class="fa-solid fa-user text-red-500 mr-1"></i>Автор неизвестен';
                     }
                 })
                 .catch(() => {
-                    document.getElementById('videoTitle').textContent = 'Название недоступно';
-                    document.getElementById('videoAuthor').innerHTML = `<i class="fa-solid fa-user text-red-500 mr-1"></i>Неизвестный автор`;
+                    document.getElementById('videoTitle').textContent = 'YouTube Видео';
+                    document.getElementById('videoAuthor').innerHTML = '<i class="fa-solid fa-user text-red-500 mr-1"></i>Неизвестен';
                 });
-            
+
             const resultSection = document.getElementById('resultSection');
             resultSection.classList.remove('hidden');
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            showToast('✨ Превью загружено!');
         }
 
-        // Запрос картинки (учитывая PRO / Free статусы)
         function requestImage(quality) {
-            if (!currentVideoId) return;
-
-            // Максимальное разрешение доступно только для PRO
-            if (quality === 'maxresdefault' && !isPro()) {
-                openProModal();
-                showToast('Максимальное качество доступно в PRO!', true);
+            if (!currentVideoId) {
+                showToast('Сначала введите ссылку на видео', true);
                 return;
             }
 
-            // Для PRO открывается сразу
-            if (isPro()) {
-                openImageReal(quality);
-            } else {
-                // Для обычных юзеров — задержка 5 секунд
-                startDelayModal(quality);
+            const imgUrl = `https://img.youtube.com/vi/${currentVideoId}/${quality}.jpg`;
+
+            // Если качество HD (maxresdefault) и юзер не PRO
+            if (quality === 'maxresdefault' && !isPro()) {
+                showToast('Максимальное качество HD доступно только в PRO версии!', true);
+                openProModal();
+                return;
             }
+
+            // Если пользователь PRO — открываем мгновенно без задержки
+            if (isPro()) {
+                window.open(imgUrl, '_blank');
+                showToast('Картинка открыта!');
+                return;
+            }
+
+            // Обычный пользователь — включаем 5-секундный таймер задержки
+            openDelayModal(imgUrl);
         }
 
-        function openImageReal(quality) {
-            const imageUrl = `https://img.youtube.com/vi/${currentVideoId}/${quality}.jpg`;
-            window.open(imageUrl, '_blank');
-            showToast('🌐 Картинка открыта в новой вкладке');
-        }
+        function openDelayModal(imgUrl) {
+            const modal = document.getElementById('delayModal');
+            const countdownEl = document.getElementById('delayCountdown');
+            let secondsLeft = 5;
 
-        // Запуск модального окна таймера
-        function startDelayModal(quality) {
-            pendingQuality = quality;
-            let seconds = 5;
-            
-            const delayModal = document.getElementById('delayModal');
-            const delayCountdown = document.getElementById('delayCountdown');
-            delayCountdown.textContent = seconds;
-
-            delayModal.classList.remove('pointer-events-none', 'opacity-0');
-            delayModal.querySelector('div.transform').classList.remove('scale-95');
-            delayModal.querySelector('div.transform').classList.add('scale-100');
+            countdownEl.textContent = secondsLeft;
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
 
             if (delayTimer) clearInterval(delayTimer);
 
             delayTimer = setInterval(() => {
-                seconds--;
-                delayCountdown.textContent = seconds;
-                if (seconds <= 0) {
+                secondsLeft--;
+                countdownEl.textContent = secondsLeft;
+
+                if (secondsLeft <= 0) {
                     clearInterval(delayTimer);
                     closeDelayModal();
-                    openImageReal(pendingQuality);
+                    window.open(imgUrl, '_blank');
+                    showToast('Загрузка завершена!');
                 }
             }, 1000);
         }
 
         function closeDelayModal() {
             if (delayTimer) clearInterval(delayTimer);
-            const delayModal = document.getElementById('delayModal');
-            delayModal.classList.add('opacity-0', 'pointer-events-none');
-            delayModal.querySelector('div.transform').classList.remove('scale-100');
-            delayModal.querySelector('div.transform').classList.add('scale-95');
+            const modal = document.getElementById('delayModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.querySelector('div').classList.add('scale-95');
+            modal.querySelector('div').classList.remove('scale-100');
         }
 
         function closeDelayAndOpenPro() {
@@ -582,103 +586,74 @@
             openProModal();
         }
 
-        // Модальное окно PRO
-        function openProModal() {
-            const modal = document.getElementById('proModal');
-            modal.classList.remove('pointer-events-none', 'opacity-0');
-            modal.querySelector('div.transform').classList.remove('scale-95');
-            modal.querySelector('div.transform').classList.add('scale-100');
-        }
-
-        function closeProModal() {
-            const modal = document.getElementById('proModal');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.querySelector('div.transform').classList.remove('scale-100');
-            modal.querySelector('div.transform').classList.add('scale-95');
-        }
-
-        // Применение промокодов
-        function applyPromo() {
-            const code = document.getElementById('promoInput').value.trim().toUpperCase();
-            const status = document.getElementById('promoStatus');
-            const oldPrice = document.getElementById('oldPrice');
-            const currentPrice = document.getElementById('currentPrice');
-
-            status.classList.remove('hidden', 'text-emerald-500', 'text-red-500', 'text-amber-500');
-
-            if (code === 'TESTDONATEFREE288') {
-                localStorage.setItem('isPro', 'true');
-                updateProUI();
-                status.textContent = '🎉 PRO-версия успешно активирована бесплатно!';
-                status.classList.add('text-emerald-500');
-                showToast('👑 Вы получили PRO-версию!');
-                setTimeout(closeProModal, 1500);
-            } 
-            else if (code === 'TESTDONATEFREE1488') {
-                localStorage.removeItem('isPro');
-                updateProUI();
-                status.textContent = '❌ PRO-подписка деактивирована.';
-                status.classList.add('text-red-500');
-                showToast('Подписка PRO убрана');
-            } 
-            else if (code === 'DONATEFORME') {
-                discountMultiplier = 0.8; // -20%
-                oldPrice.classList.remove('hidden');
-                currentPrice.textContent = '$1.60';
-                status.textContent = '🏷️ Применена скидка 20%!';
-                status.classList.add('text-amber-500');
-                showToast('Скидка 20% применена');
-            } 
-            else if (code === 'MRGAPRO2026') {
-                discountMultiplier = 0.5; // -50%
-                oldPrice.classList.remove('hidden');
-                currentPrice.textContent = '$1.00';
-                status.textContent = '🏷️ Применена скидка 50%!';
-                status.classList.add('text-amber-500');
-                showToast('Скидка 50% применена');
-            } 
-            else {
-                status.textContent = '❌ Неверный или недействительный промокод';
-                status.classList.add('text-red-500');
-            }
-        }
-
-        // Переход к оплате
-        function payPro() {
-            if (isPro()) {
-                showToast('У вас уже активирована PRO-версия!');
-                return;
-            }
-
-            // Переход на внешнюю страницу оплаты / доната
-            const donationUrl = 'https://www.donationalerts.com/r/vizquacker'; // Реальный сервис донатов
-            window.open(donationUrl, '_blank');
-
-            showToast('🌐 Переход на страницу оплаты...');
-        }
-
-        // Инструкции Modal
+        // Модальное окно инструкций
         function openInstructions() {
             const modal = document.getElementById('instructionsModal');
-            modal.classList.remove('pointer-events-none', 'opacity-0');
-            modal.querySelector('div.transform').classList.remove('scale-95');
-            modal.querySelector('div.transform').classList.add('scale-100');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
         }
 
         function closeInstructions() {
             const modal = document.getElementById('instructionsModal');
             modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.querySelector('div.transform').classList.remove('scale-100');
-            modal.querySelector('div.transform').classList.add('scale-95');
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.querySelector('div').classList.add('scale-95');
+            modal.querySelector('div').classList.remove('scale-100');
         }
 
-        document.getElementById('instructionsModal').addEventListener('click', function(e) {
-            if (e.target === this) closeInstructions();
-        });
+        // PRO Модалка
+        function openProModal() {
+            const modal = document.getElementById('proModal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+        }
 
-        document.getElementById('proModal').addEventListener('click', function(e) {
-            if (e.target === this) closeProModal();
-        });
+        function closeProModal() {
+            const modal = document.getElementById('proModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.querySelector('div').classList.add('scale-95');
+            modal.querySelector('div').classList.remove('scale-100');
+        }
+
+        // Промокоды
+        function applyPromo() {
+            const codeInput = document.getElementById('promoInput').value.trim().toUpperCase();
+            const promoStatus = document.getElementById('promoStatus');
+            const oldPrice = document.getElementById('oldPrice');
+            const currentPrice = document.getElementById('currentPrice');
+
+            promoStatus.classList.remove('hidden', 'text-emerald-500', 'text-red-500');
+
+            if (codeInput === 'VIZQUACKER' || codeInput === 'FREEPRO' || codeInput === 'PROMO100') {
+                discountMultiplier = 0;
+                oldPrice.classList.remove('hidden');
+                currentPrice.textContent = 'БЕСПЛАТНО';
+                promoStatus.classList.add('text-emerald-500');
+                promoStatus.textContent = '🎉 Промокод применён! 100% скидка.';
+            } else if (codeInput === 'PROMO50' || codeInput === 'DISCOUNT50') {
+                discountMultiplier = 0.5;
+                oldPrice.classList.remove('hidden');
+                currentPrice.textContent = '$1.00';
+                promoStatus.classList.add('text-emerald-500');
+                promoStatus.textContent = '🎉 Промокод применён! Скидка 50%.';
+            } else {
+                promoStatus.classList.add('text-red-500');
+                promoStatus.textContent = '❌ Неверный или истёкший промокод.';
+            }
+        }
+
+        // Оплата PRO
+        function payPro() {
+            localStorage.setItem('isPro', 'true');
+            updateProUI();
+            closeProModal();
+            showToast('TubeGrabber PRO успешно активирован! 🎉');
+        }
     </script>
 </body>
 </html>
