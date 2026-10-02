@@ -22,6 +22,8 @@
             }
         }
     </script>
+    <!-- EmailJS SDK для регистрации -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-slate-100 to-rose-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col selection:bg-red-500 selection:text-white">
 
@@ -44,6 +46,12 @@
                 </div>
             </div>
             <div class="flex items-center space-x-2">
+                <!-- Профиль зарегистрированного пользователя -->
+                <div id="userProfileHeader" class="hidden items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-zinc-700">
+                    <i class="fa-solid fa-circle-user text-red-500 text-sm"></i>
+                    <span id="userNameHeader">Пользователь</span>
+                </div>
+
                 <!-- Кнопка PRO -->
                 <button id="proHeaderBtn" onclick="openProModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-bold shadow-md shadow-amber-500/20 transition flex items-center space-x-1.5 cursor-pointer">
                     <i class="fa-solid fa-crown"></i>
@@ -221,6 +229,124 @@
 
     </main>
 
+<!-- MODAL: REGISTRATION & EMAIL VERIFICATION -->
+    <div id="authModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-md w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300 relative">
+            
+            <!-- STEP 1: FORM -->
+            <div id="authStep1" class="space-y-5">
+                <div class="text-center space-y-2">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-red-600/10 dark:bg-red-500/20 text-red-600 dark:text-red-500 flex items-center justify-center text-2xl font-bold">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white">Регистрация</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Зарегистрируйтесь для доступа к сервису TubeGrabber</p>
+                </div>
+
+                <form id="regForm" onsubmit="handleSendCode(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Ваше имя</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-user text-sm"></i>
+                            </span>
+                            <input type="text" id="regName" required placeholder="vizquacker" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">Эл. почта</label>
+                            <span class="text-[10px] text-red-500 font-semibold">Только @gmail.com</span>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-envelope text-sm"></i>
+                            </span>
+                            <input type="email" id="regEmail" required placeholder="example@gmail.com" class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Пароль</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-lock text-sm"></i>
+                            </span>
+                            <input type="password" id="regPassword" required oninput="validatePassword()" placeholder="••••••••" class="w-full pl-10 pr-10 py-3 bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                            <button type="button" onclick="togglePassVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                                <i id="passEyeIcon" class="fa-solid fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="mt-2.5 p-3 bg-slate-50 dark:bg-zinc-800/60 rounded-xl border border-slate-200/60 dark:border-zinc-700/60 text-[11px] space-y-1">
+                            <div class="font-bold text-slate-700 dark:text-slate-300 mb-1">Требования к паролю:</div>
+                            <div id="ruleLength" class="flex items-center space-x-1.5 text-slate-400">
+                                <i class="fa-solid fa-circle-xmark text-xs"></i>
+                                <span>Не менее 8 символов</span>
+                            </div>
+                            <div id="ruleUpperLower" class="flex items-center space-x-1.5 text-slate-400">
+                                <i class="fa-solid fa-circle-xmark text-xs"></i>
+                                <span>Заглавная и строчная буквы</span>
+                            </div>
+                            <div id="ruleNumber" class="flex items-center space-x-1.5 text-slate-400">
+                                <i class="fa-solid fa-circle-xmark text-xs"></i>
+                                <span>Хотя бы одна цифра</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p id="regError" class="text-xs text-red-500 font-medium hidden text-center leading-relaxed"></p>
+
+                    <button type="submit" id="sendCodeBtn" class="w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-red-600/30 transition flex items-center justify-center space-x-2 cursor-pointer">
+                        <i id="sendCodeBtnIcon" class="fa-solid fa-paper-plane"></i>
+                        <span id="sendCodeBtnText">Отправить код подтверждения</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 2: VERIFICATION CODE -->
+            <div id="authStep2" class="space-y-5 hidden">
+                <div class="text-center space-y-2">
+                    <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl font-bold">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white">Подтверждение E-mail</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Код отправлен на <span id="targetEmailText" class="font-semibold text-slate-800 dark:text-slate-200"></span>
+                    </p>
+                </div>
+
+                <form id="otpForm" onsubmit="handleVerifyCode(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1 text-center">Введите 6-значный код</label>
+                        <input type="text" id="otpCode" maxlength="6" required placeholder="123456" class="w-full text-center text-2xl font-mono tracking-widest py-3 bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1">
+                        <span>Время действия кода:</span>
+                        <span id="otpTimer" class="font-mono font-bold text-red-500">15:00</span>
+                    </div>
+
+                    <p id="otpError" class="text-xs text-red-500 font-medium hidden text-center"></p>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-red-600/30 transition flex items-center justify-center space-x-2 cursor-pointer">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span>Подтвердить и завершить</span>
+                    </button>
+
+                    <div class="text-center pt-1">
+                        <button type="button" onclick="backToStep1()" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 underline cursor-pointer">
+                            Изменить данные / Запросить новый код
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    
     <!-- Modal Instructions -->
     <div id="instructionsModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-lg w-full mx-4 p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
@@ -899,6 +1025,238 @@
 
         initTheme();
         updateProUI();
-    </script>
+    
+        // ===== РЕГИСТРАЦИЯ И ПОДТВЕРЖДЕНИЕ E-MAIL (из TubeGrabber_2) =====
+        // ИНИЦИАЛИЗАЦИЯ EMAILJS С ВАШИМ PUBLIC KEY
+        const EMAILJS_PUBLIC_KEY = "-dfqaLf2JcS8AzvXz";
+        const EMAILJS_SERVICE_ID = "service_qfjevad";
+        const EMAILJS_TEMPLATE_ID = "template_ho0415b";
+
+        (function() {
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+        })();
+
+        
+        let isRegistered = localStorage.getItem('tb_user_registered') === 'true';
+        
+        let generatedPasscode = null;
+        let passcodeExpiresAt = null;
+        let otpTimerInterval = null;
+        
+        // ИНИЦИАЛИЗАЦИЯ
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            updateProUI();
+            checkRegistrationStatus();
+        });
+
+        function checkRegistrationStatus() {
+            if (!isRegistered) {
+                openAuthModal();
+            } else {
+                updateUserUI();
+            }
+        }
+
+        function updateUserUI() {
+            const userDataStr = localStorage.getItem('tb_user_data');
+            if (userDataStr) {
+                try {
+                    const userData = JSON.parse(userDataStr);
+                    if (userData && userData.name) {
+                        document.getElementById('userNameHeader').textContent = userData.name;
+                        document.getElementById('userProfileHeader').classList.remove('hidden');
+                        document.getElementById('userProfileHeader').classList.add('flex');
+                    }
+                } catch(e) {}
+            }
+        }
+
+        function openAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.add('pointer-events-none', 'opacity-0');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+        }
+
+        function togglePassVisibility() {
+            const input = document.getElementById('regPassword');
+            const icon = document.getElementById('passEyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-solid fa-eye-slash text-sm';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-solid fa-eye text-sm';
+            }
+        }
+
+        function validatePassword() {
+            const pass = document.getElementById('regPassword').value;
+            
+            const hasLength = pass.length >= 8;
+            const hasUpper = /[A-ZА-Я]/.test(pass);
+            const hasLower = /[a-zа-я]/.test(pass);
+            const hasUpperLower = hasUpper && hasLower;
+            const hasNumber = /[0-9]/.test(pass);
+
+            updateRuleUI('ruleLength', hasLength);
+            updateRuleUI('ruleUpperLower', hasUpperLower);
+            updateRuleUI('ruleNumber', hasNumber);
+
+            return hasLength && hasUpperLower && hasNumber;
+        }
+
+        function updateRuleUI(elementId, isValid) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const icon = el.querySelector('i');
+            if (isValid) {
+                el.className = 'flex items-center space-x-1.5 text-emerald-500 font-semibold';
+                icon.className = 'fa-solid fa-circle-check text-xs';
+            } else {
+                el.className = 'flex items-center space-x-1.5 text-slate-400';
+                icon.className = 'fa-solid fa-circle-xmark text-xs';
+            }
+        }
+
+        // ОБРАБОТКА ОТПРАВКИ КОДА С ПРОВЕРКОЙ @GMAIL.COM И EMAILJS
+        async function handleSendCode(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const errorEl = document.getElementById('regError');
+
+            errorEl.classList.add('hidden');
+
+            // 1. Проверка на почту gmail.com
+            if (!email.endsWith('@gmail.com')) {
+                errorEl.textContent = 'Регистрация разрешена только для адресов @gmail.com';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            // 2. Проверка требований к паролю
+            if (!validatePassword()) {
+                errorEl.textContent = 'Пароль не отвечает требованиям сложности.';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            const btn = document.getElementById('sendCodeBtn');
+            const btnIcon = document.getElementById('sendCodeBtnIcon');
+            const btnText = document.getElementById('sendCodeBtnText');
+
+            btn.disabled = true;
+            btnIcon.className = 'fa-solid fa-spinner fa-spin';
+            btnText.textContent = 'Отправка кода...';
+
+            generatedPasscode = Math.floor(100000 + Math.random() * 900000).toString();
+            passcodeExpiresAt = Date.now() + 15 * 60 * 1000;
+
+            const templateParams = {
+                email: email,
+                to_email: email,
+                name: name,
+                to_name: name,
+                passcode: generatedPasscode
+            };
+
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams, EMAILJS_PUBLIC_KEY);
+
+                document.getElementById('targetEmailText').textContent = email;
+                document.getElementById('authStep1').classList.add('hidden');
+                document.getElementById('authStep2').classList.remove('hidden');
+                
+                startOtpCountdown();
+                showToast('Код подтверждения отправлен!');
+            } catch (err) {
+                console.error('Ошибка отправки EmailJS:', err);
+                let errorDetails = 'Не удалось отправить код.';
+                if (err && err.text) {
+                    errorDetails += ` Ошибка EmailJS: ${err.text}`;
+                }
+                errorEl.textContent = errorDetails;
+                errorEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btnIcon.className = 'fa-solid fa-paper-plane';
+                btnText.textContent = 'Отправить код подтверждения';
+            }
+        }
+
+        // ТАЙМЕР 15 МИНУТ
+        function startOtpCountdown() {
+            clearInterval(otpTimerInterval);
+            const timerEl = document.getElementById('otpTimer');
+
+            otpTimerInterval = setInterval(() => {
+                const diff = passcodeExpiresAt - Date.now();
+                if (diff <= 0) {
+                    clearInterval(otpTimerInterval);
+                    timerEl.textContent = '00:00 (Истёк)';
+                    return;
+                }
+                const totalSec = Math.floor(diff / 1000);
+                const mins = Math.floor(totalSec / 60);
+                const secs = totalSec % 60;
+                timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // ПРОВЕРКА КОДА ПРИ ВВОДЕ
+        function handleVerifyCode(e) {
+            e.preventDefault();
+            const inputCode = document.getElementById('otpCode').value.trim();
+            const errorEl = document.getElementById('otpError');
+            errorEl.classList.add('hidden');
+
+            if (Date.now() > passcodeExpiresAt) {
+                errorEl.textContent = 'Срок действия кода истёк (15 минут). Запросите новый код.';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            if (inputCode !== generatedPasscode) {
+                errorEl.textContent = 'Неверный код подтверждения.';
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+
+            isRegistered = true;
+            localStorage.setItem('tb_user_registered', 'true');
+            localStorage.setItem('tb_user_data', JSON.stringify({ name, email, regDate: new Date().toISOString() }));
+
+            clearInterval(otpTimerInterval);
+            closeAuthModal();
+            updateUserUI();
+            showToast(`Успешный вход! С возвращением, ${name}!`);
+        }
+
+        function backToStep1() {
+            clearInterval(otpTimerInterval);
+            document.getElementById('authStep2').classList.add('hidden');
+            document.getElementById('authStep1').classList.remove('hidden');
+        }
+
+        
+        // Автоматически открываем регистрацию для нового пользователя.
+        document.addEventListener('DOMContentLoaded', () => {
+            checkRegistrationStatus();
+        });
+</script>
 </body>
 </html>
