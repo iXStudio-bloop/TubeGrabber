@@ -32,12 +32,24 @@
                 <div class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center shadow-lg shadow-red-500/30 text-white text-xl">
                     <i class="fa-brands fa-youtube"></i>
                 </div>
-                <div>
-                    <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-600 to-rose-500 bg-clip-text text-transparent">TubeGrabber</span>
-                    <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Thumbnail Downloader</span>
+                <div class="flex items-center space-x-2">
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-red-600 to-rose-500 bg-clip-text text-transparent">TubeGrabber</span>
+                        <span class="block text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Thumbnail Downloader</span>
+                    </div>
+                    <!-- Мини-фрейм PRO в левом верхнем углу -->
+                    <span id="proBadgeHeader" class="hidden px-2 py-0.5 text-[10px] font-extrabold tracking-wider text-white bg-gradient-to-r from-amber-500 to-orange-500 rounded-md shadow-md shadow-amber-500/20 uppercase border border-amber-300/30">
+                        PRO
+                    </span>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
+                <!-- Кнопка PRO -->
+                <button id="proHeaderBtn" onclick="openProModal()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-bold shadow-md shadow-amber-500/20 transition flex items-center space-x-1.5 cursor-pointer">
+                    <i class="fa-solid fa-crown"></i>
+                    <span id="proHeaderBtnText">Купить Pro</span>
+                </button>
+                <!-- Переключатель темы -->
                 <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-zinc-700 transition shadow-sm" aria-label="Сменить тему">
                     <i id="themeIcon" class="fa-solid fa-moon"></i>
                 </button>
@@ -143,17 +155,19 @@
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Max Resolution -->
-                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-red-500 transition">
+                    <!-- Max Resolution (PRO ONLY) -->
+                    <div class="bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-700/80 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500 transition relative overflow-hidden group">
                         <div class="space-y-2 mb-4">
                             <div class="flex items-center justify-between">
-                                <span class="px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-lg shadow-sm">Максимальное</span>
+                                <span class="px-2.5 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-1">
+                                    <i class="fa-solid fa-crown text-[10px]"></i> Максимальное
+                                </span>
                             </div>
                             <h5 class="font-bold text-slate-900 dark:text-white text-lg font-mono">1280 × 720</h5>
                         </div>
-                        <button onclick="openImage('maxresdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span>Открыть HD</span>
+                        <button onclick="requestImage('maxresdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-amber-500 dark:hover:bg-amber-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
+                            <span id="maxresBtnIcon"><i class="fa-solid fa-lock text-amber-400"></i></span>
+                            <span id="maxresBtnText">Открыть HD</span>
                         </button>
                     </div>
 
@@ -165,7 +179,7 @@
                             </div>
                             <h5 class="font-bold text-slate-900 dark:text-white text-lg font-mono">480 × 360</h5>
                         </div>
-                        <button onclick="openImage('hqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
+                        <button onclick="requestImage('hqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             <span>Открыть HQ</span>
                         </button>
@@ -179,7 +193,7 @@
                             </div>
                             <h5 class="font-bold text-slate-900 dark:text-white text-lg font-mono">320 × 180</h5>
                         </div>
-                        <button onclick="openImage('mqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
+                        <button onclick="requestImage('mqdefault')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             <span>Открыть MQ</span>
                         </button>
@@ -193,7 +207,7 @@
                             </div>
                             <h5 class="font-bold text-slate-900 dark:text-white text-lg font-mono">120 × 90</h5>
                         </div>
-                        <button onclick="openImage('default')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
+                        <button onclick="requestImage('default')" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-red-600 dark:hover:bg-red-500 dark:hover:text-white font-semibold py-3 px-4 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer">
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                             <span>Открыть MIN</span>
                         </button>
@@ -204,7 +218,7 @@
 
         <!-- Toast -->
         <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 text-sm font-semibold">
-            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+            <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
             <span id="toastMessage">Успешно!</span>
         </div>
 
@@ -228,7 +242,7 @@
                         <span>На компьютере (ПК / Ноутбук)</span>
                     </div>
                     <ol class="list-decimal list-inside space-y-1.5 pl-1 text-slate-600 dark:text-slate-400">
-                        <li>Нажмите кнопку выбранного разрешения (например, <strong class="text-slate-800 dark:text-slate-200">Открыть HD</strong>). Картинка откроется в новой вкладке.</li>
+                        <li>Нажмите кнопку выбранного разрешения (например, <strong class="text-slate-800 dark:text-slate-200">Открыть HQ</strong>). Картинка откроется в новой вкладке.</li>
                         <li>Нажмите <strong class="text-slate-800 dark:text-slate-200">правой кнопкой мыши</strong> по изображению.</li>
                         <li>Выберите пункт <strong class="text-slate-800 dark:text-slate-200">«Сохранить картинку как...»</strong> и выберите папку на компьютере.</li>
                     </ol>
@@ -256,6 +270,94 @@
         </div>
     </div>
 
+    <!-- PRO Modal -->
+    <div id="proModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-lg w-full mx-4 p-6 sm:p-8 shadow-2xl border border-amber-500/30 transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto relative">
+            
+            <button onclick="closeProModal()" class="absolute top-6 right-6 w-9 h-9 rounded-xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-500 hover:bg-slate-200 dark:hover:bg-zinc-700 transition cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-3 mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white text-3xl shadow-lg shadow-amber-500/30">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white">TubeGrabber PRO</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Единоразовая покупка. Навсегда ваш аккаунт без ограничений.</p>
+            </div>
+
+            <!-- Плюсы PRO -->
+            <div class="space-y-3 mb-6">
+                <div class="flex items-start space-x-3 bg-amber-500/10 p-3.5 rounded-2xl border border-amber-500/20">
+                    <i class="fa-solid fa-bolt text-amber-500 text-lg mt-0.5"></i>
+                    <div>
+                        <h5 class="text-xs font-bold text-slate-900 dark:text-white">Без задержки в 5 секунд</h5>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Мгновенное открытие любых картинок в 1 клик.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-3 bg-amber-500/10 p-3.5 rounded-2xl border border-amber-500/20">
+                    <i class="fa-solid fa-image text-amber-500 text-lg mt-0.5"></i>
+                    <div>
+                        <h5 class="text-xs font-bold text-slate-900 dark:text-white">Максимальное качество (1280 × 720)</h5>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Разблокировка максимального доступного HD разрешения.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start space-x-3 bg-amber-500/10 p-3.5 rounded-2xl border border-amber-500/20">
+                    <i class="fa-solid fa-heart text-amber-500 text-lg mt-0.5"></i>
+                    <div>
+                        <h5 class="text-xs font-bold text-slate-900 dark:text-white">Поддержка проекта</h5>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Эксклюзивный значок PRO в шапке сайта навсегда.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Промокоды -->
+            <div class="space-y-2 mb-6">
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300">Есть промокод?</label>
+                <div class="flex gap-2">
+                    <input type="text" id="promoInput" placeholder="Введите код" class="flex-grow px-3.5 py-2.5 bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl text-xs uppercase font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    <button onclick="applyPromo()" class="px-4 py-2.5 bg-slate-900 dark:bg-zinc-700 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition cursor-pointer">
+                        Применить
+                    </button>
+                </div>
+                <p id="promoStatus" class="text-[11px] hidden font-semibold"></p>
+            </div>
+
+            <!-- Цена и кнопка оплаты -->
+            <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 text-center space-y-4">
+                <div class="flex items-center justify-center space-x-3">
+                    <span id="oldPrice" class="text-lg text-slate-400 line-through font-bold hidden">$2.00</span>
+                    <span id="currentPrice" class="text-3xl font-black text-slate-900 dark:text-white">$2.00</span>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2.5 py-1 rounded-lg font-bold">Навсегда</span>
+                </div>
+
+                <button id="payProBtn" onclick="payPro()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-amber-500/25 transition transform active:scale-95 flex items-center justify-center space-x-2 cursor-pointer text-base">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span id="payBtnText">Купить TubeGrabber PRO</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Delay Modal (Для обычных пользователей) -->
+    <div id="delayModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-sm w-full mx-4 p-6 text-center shadow-2xl border border-slate-200 dark:border-zinc-800 transform scale-95 transition-transform duration-300">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-2xl font-black">
+                <span id="delayCountdown">5</span>
+            </div>
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Загрузка картинки...</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">
+                Бесплатная версия содержит задержку перед открытием файла.
+            </p>
+            <button onclick="closeDelayAndOpenPro()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold py-3 px-4 rounded-xl text-xs hover:opacity-90 transition shadow-md flex items-center justify-center space-x-1.5 cursor-pointer">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Убрать ожидание с PRO</span>
+            </button>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="w-full border-t border-slate-200 dark:border-zinc-800 py-6 text-center text-xs text-slate-400">
         <p>&copy; 2026 TubeGrabber by vizquacker. Все права защищены.</p>
@@ -264,6 +366,40 @@
     <!-- JavaScript -->
     <script>
         let currentVideoId = '';
+        let pendingQuality = '';
+        let delayTimer = null;
+        let discountMultiplier = 1; // 1 = 100% цены
+
+        // Проверка статуса PRO
+        function isPro() {
+            return localStorage.getItem('isPro') === 'true';
+        }
+
+        // Обновление отображения PRO на сайте
+        function updateProUI() {
+            const badge = document.getElementById('proBadgeHeader');
+            const proBtnText = document.getElementById('proHeaderBtnText');
+            const proBtn = document.getElementById('proHeaderBtn');
+            const maxresIcon = document.getElementById('maxresBtnIcon');
+
+            if (isPro()) {
+                badge.classList.remove('hidden');
+                proBtnText.textContent = 'PRO Активен';
+                proBtn.classList.remove('from-amber-500', 'to-orange-500');
+                proBtn.classList.add('from-emerald-500', 'to-teal-600');
+                if (maxresIcon) {
+                    maxresIcon.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i>';
+                }
+            } else {
+                badge.classList.add('hidden');
+                proBtnText.textContent = 'Купить Pro';
+                proBtn.classList.remove('from-emerald-500', 'to-teal-600');
+                proBtn.classList.add('from-amber-500', 'to-orange-500');
+                if (maxresIcon) {
+                    maxresIcon.innerHTML = '<i class="fa-solid fa-lock text-amber-400"></i>';
+                }
+            }
+        }
 
         function initTheme() {
             const savedTheme = localStorage.getItem('theme');
@@ -292,6 +428,7 @@
         }
 
         initTheme();
+        updateProUI();
 
         function extractVideoId(url) {
             if (!url) return null;
@@ -305,9 +442,18 @@
             document.getElementById('grabForm').requestSubmit();
         }
 
-        function showToast(message) {
+        function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toastIcon');
+            
             document.getElementById('toastMessage').textContent = message;
+            
+            if (isError) {
+                toastIcon.className = 'fa-solid fa-circle-xmark text-red-400 text-lg';
+            } else {
+                toastIcon.className = 'fa-solid fa-circle-check text-emerald-400 text-lg';
+            }
+
             toast.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => {
                 toast.classList.add('translate-y-24', 'opacity-0');
@@ -320,7 +466,7 @@
             const videoId = extractVideoId(inputVal);
 
             if (!videoId) {
-                showToast('❌ Введите корректную ссылку на YouTube');
+                showToast('Введите корректную ссылку на YouTube', true);
                 return;
             }
 
@@ -340,10 +486,7 @@
             };
             testImg.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
-            // Устанавливаем ID видео
             document.getElementById('videoVideoIdText').textContent = `ID: ${videoId}`;
-            
-            // Загружаем название и автора видео через oEmbed API
             document.getElementById('videoTitle').textContent = 'Загрузка названия...';
             document.getElementById('videoAuthor').innerHTML = '<i class="fa-solid fa-user text-red-500 mr-1"></i>Загрузка...';
 
@@ -374,15 +517,147 @@
             showToast('✨ Превью загружено!');
         }
 
-        // Открытие картинки в новой вкладке
-        function openImage(quality) {
+        // Запрос картинки (учитывая PRO / Free статусы)
+        function requestImage(quality) {
             if (!currentVideoId) return;
+
+            // Максимальное разрешение доступно только для PRO
+            if (quality === 'maxresdefault' && !isPro()) {
+                openProModal();
+                showToast('Максимальное качество доступно в PRO!', true);
+                return;
+            }
+
+            // Для PRO открывается сразу
+            if (isPro()) {
+                openImageReal(quality);
+            } else {
+                // Для обычных юзеров — задержка 5 секунд
+                startDelayModal(quality);
+            }
+        }
+
+        function openImageReal(quality) {
             const imageUrl = `https://img.youtube.com/vi/${currentVideoId}/${quality}.jpg`;
             window.open(imageUrl, '_blank');
             showToast('🌐 Картинка открыта в новой вкладке');
         }
 
-        // Управление модальным окном инструкций
+        // Запуск модального окна таймера
+        function startDelayModal(quality) {
+            pendingQuality = quality;
+            let seconds = 5;
+            
+            const delayModal = document.getElementById('delayModal');
+            const delayCountdown = document.getElementById('delayCountdown');
+            delayCountdown.textContent = seconds;
+
+            delayModal.classList.remove('pointer-events-none', 'opacity-0');
+            delayModal.querySelector('div.transform').classList.remove('scale-95');
+            delayModal.querySelector('div.transform').classList.add('scale-100');
+
+            if (delayTimer) clearInterval(delayTimer);
+
+            delayTimer = setInterval(() => {
+                seconds--;
+                delayCountdown.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(delayTimer);
+                    closeDelayModal();
+                    openImageReal(pendingQuality);
+                }
+            }, 1000);
+        }
+
+        function closeDelayModal() {
+            if (delayTimer) clearInterval(delayTimer);
+            const delayModal = document.getElementById('delayModal');
+            delayModal.classList.add('opacity-0', 'pointer-events-none');
+            delayModal.querySelector('div.transform').classList.remove('scale-100');
+            delayModal.querySelector('div.transform').classList.add('scale-95');
+        }
+
+        function closeDelayAndOpenPro() {
+            closeDelayModal();
+            openProModal();
+        }
+
+        // Модальное окно PRO
+        function openProModal() {
+            const modal = document.getElementById('proModal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.querySelector('div.transform').classList.remove('scale-95');
+            modal.querySelector('div.transform').classList.add('scale-100');
+        }
+
+        function closeProModal() {
+            const modal = document.getElementById('proModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div.transform').classList.remove('scale-100');
+            modal.querySelector('div.transform').classList.add('scale-95');
+        }
+
+        // Применение промокодов
+        function applyPromo() {
+            const code = document.getElementById('promoInput').value.trim().toUpperCase();
+            const status = document.getElementById('promoStatus');
+            const oldPrice = document.getElementById('oldPrice');
+            const currentPrice = document.getElementById('currentPrice');
+
+            status.classList.remove('hidden', 'text-emerald-500', 'text-red-500', 'text-amber-500');
+
+            if (code === 'TESTDONATEFREE288') {
+                localStorage.setItem('isPro', 'true');
+                updateProUI();
+                status.textContent = '🎉 PRO-версия успешно активирована бесплатно!';
+                status.classList.add('text-emerald-500');
+                showToast('👑 Вы получили PRO-версию!');
+                setTimeout(closeProModal, 1500);
+            } 
+            else if (code === 'TESTDONATEFREE1488') {
+                localStorage.removeItem('isPro');
+                updateProUI();
+                status.textContent = '❌ PRO-подписка деактивирована.';
+                status.classList.add('text-red-500');
+                showToast('Подписка PRO убрана');
+            } 
+            else if (code === 'DONATEFORME') {
+                discountMultiplier = 0.8; // -20%
+                oldPrice.classList.remove('hidden');
+                currentPrice.textContent = '$1.60';
+                status.textContent = '🏷️ Применена скидка 20%!';
+                status.classList.add('text-amber-500');
+                showToast('Скидка 20% применена');
+            } 
+            else if (code === 'MRGAPRO2026') {
+                discountMultiplier = 0.5; // -50%
+                oldPrice.classList.remove('hidden');
+                currentPrice.textContent = '$1.00';
+                status.textContent = '🏷️ Применена скидка 50%!';
+                status.classList.add('text-amber-500');
+                showToast('Скидка 50% применена');
+            } 
+            else {
+                status.textContent = '❌ Неверный или недействительный промокод';
+                status.classList.add('text-red-500');
+            }
+        }
+
+        // Переход к оплате
+        function payPro() {
+            if (isPro()) {
+                showToast('У вас уже активирована PRO-версия!');
+                return;
+            }
+
+            // Переход на внешнюю страницу оплаты / доната
+            const donationUrl = 'https://www.donationalerts.com/r/vizquacker'; // Реальный сервис донатов
+            window.open(donationUrl, '_blank');
+
+            showToast('🌐 Переход на страницу оплаты...');
+        }
+
+        // Инструкции Modal
         function openInstructions() {
             const modal = document.getElementById('instructionsModal');
             modal.classList.remove('pointer-events-none', 'opacity-0');
@@ -397,11 +672,12 @@
             modal.querySelector('div.transform').classList.add('scale-95');
         }
 
-        // Закрытие модального окна по клику вне его области
         document.getElementById('instructionsModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeInstructions();
-            }
+            if (e.target === this) closeInstructions();
+        });
+
+        document.getElementById('proModal').addEventListener('click', function(e) {
+            if (e.target === this) closeProModal();
         });
     </script>
 </body>
